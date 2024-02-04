@@ -18,7 +18,29 @@ const AdminOrder = () => {
   const [orderData, setOrderData] = useState(null); // Estado para almacenar los datos de la orden
   const [showModal, setShowModal] = useState(false);
   const [status, setStatus] = useState(["Sin procesar", "Pedido revisado", "Pedido enviado", "Pedido entregado"]);
+  const [tasa, setTasa] = useState("");
+  const [banco, setBanco] = useState("");
+  const [documento, setDocumento] = useState("");
+  const [telefono, setTelefono] = useState("");
+  
+  useEffect(() => {
+    const fetchConfig = async () => {
+      try {
+        const response = await axios.get("/api/v1/auth//all-config");
+        const configData = response.data.config;
 
+        // Establecer los valores de la configuración en los estados del componente 
+        setTasa(configData.tasa); 
+        setBanco(configData.banco);
+        setTelefono(configData.telefono);   
+        setDocumento(configData.documento)
+      } catch (error) {
+        console.error("Error al obtener la configuración:", error);
+      }
+    };
+
+    fetchConfig();
+  }, []); // La dependencia vacía asegura que esta función s
 
    const getOrderData = async () => {
       setLoading(true);
@@ -161,7 +183,7 @@ const AdminOrder = () => {
                         </div>
                         <div className="d-flex justify-content-between mb-4">
                           <p className="mb-2">Total en Boívares</p>
-                          <p className="mb-2">BS {Number(orderData?.order?.total) / 35.53} </p>
+                          <p className="mb-2">BS  {orderData?.order?.total * tasa} </p>
                         </div>
                         { orderData?.order?.pago ? (
                           <>

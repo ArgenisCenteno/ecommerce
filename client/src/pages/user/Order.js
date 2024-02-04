@@ -64,7 +64,15 @@ const Order = () => {
          value: formData,
           orderId, 
       }); 
-      toast.success("Pago enviado ")
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Pago enviado",
+        showConfirmButton: true,
+        timer: 2500
+      }).then((result) =>{
+        window.location.reload()  
+   }) 
     
   } catch (error) {
       setIsPaying(false); 
@@ -223,12 +231,13 @@ const Order = () => {
                           <p className="mb-2">Total en Boívares</p>
                           <p className="mb-2">BS {orderData?.order?.total * tasa} </p>
                         </div>
+                        <h4>REALIZAR PAGO MOVIL</h4>
                         <div className="d-flex justify-content-between mb-4">
                           <p className="mb-2">Telefono</p>
                           <p className="mb-2">{telefono}</p>
                         </div>
                         <div className="d-flex justify-content-between mb-4">
-                          <p className="mb-2">Docuemto</p>
+                          <p className="mb-2">Docuemeto</p>
                           <p className="mb-2">{documento}</p>
                         </div>
                         <div className="d-flex justify-content-between mb-4">
@@ -284,7 +293,7 @@ const Order = () => {
                     {loading ? (
                         <h2 className="text-center">Cargando...</h2>
                       ):
-                       orderData?.order?.pago.transactionId ? (
+                       orderData?.order?.pago?.transactionId ? (
                           <h2 className="text-center "  > <strong>¡Gracias por su compra!</strong> </h2>
                         ) : (
                           <>
@@ -334,9 +343,8 @@ const Order = () => {
                            <div className="mb-3">
                              <label htmlFor="tipoTransaccion" className="form-label">Tipo de Transacción</label>
                              <select className="form-select" id="tipoTransaccion" name="tipoTransaccion"   onChange={handleChange} required>
-                               <option value="">Seleccionar tipo de transacción</option>
-                               <option value="pagoMovil">Pago Móvil</option>
-                               <option value="transferencia">Transferencia</option>
+                               <option value="">Seleccionar tipo de transacción</option> 
+                               <option value="Pago Movil">Pago Movil</option>
                              </select>
                            </div>
                            <div className="mb-3">
